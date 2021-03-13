@@ -49,6 +49,5 @@ kernel.elf: entry.o start.o rcc.o
 flash: kernel.elf
 	 openocd -f /usr/local/share/openocd/scripts/interface/stlink-v2.cfg -f /usr/local/share/openocd/scripts/target/stm32f1x.cfg -c "program kernel.elf verify reset exit"
 
-
 prefix:
 	echo $(arm)
