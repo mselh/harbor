@@ -1,3 +1,6 @@
+#include "types.h"
+
+
 /* The reset and clock control module */
 struct rcc {
     volatile unsigned long rc;  /* 0 - clock control */
@@ -41,5 +44,11 @@ struct gpio {
 /* i.e. the delay time is about 0.2 seconds (200 ms) */
 #define FAST    200
 #define PC13    13
+
+
+void led_init( struct gpio* , int, ulong); 
+void led_on(struct gpio*, int );
+void led_off(struct gpio* , int );
+void delay(int);
 
 /* THE END */
