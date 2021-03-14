@@ -21,7 +21,7 @@
 .word   spin        /* 12 Debug reserved */
 .word   spin        /* 13 RESERVED */
 .word   spin        /* 14 PendSV */
-.word   spin        /* 15 SysTick */
+.word   _systick	/* 15 SysTick */
 .word   spin        /* 16 IRQ0 */
 .word   spin        /* 17 IRQ1 */
 .word   spin        /* 18 IRQ2 */
@@ -37,3 +37,8 @@ _reset:
     bl start
     b .
 
+.thumb_func
+_systick:
+	bl systick_handler
+	bl idle
+// it should store the prev context and return to it somehow, idle is just to save the day
