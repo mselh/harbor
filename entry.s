@@ -39,6 +39,7 @@ _reset:
 
 .thumb_func
 _systick:
-	bl systick_handler
-	bl idle
-// it should store the prev context and return to it somehow, idle is just to save the day
+	b systick_handler
+
+/* it should store the prev context and return to it somehow, idle is just to save the day
+*/

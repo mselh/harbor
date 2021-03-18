@@ -1,31 +1,14 @@
 #include "types.h"
 #include "rcc.h"
 
-void led_init( struct gpio* gp, int bit, ulong gp_enable ) {
-    int conf;
-    int shift;
-    struct rcc *rp = RCC_BASE;
 
-    // Turn on GPIO port within clock 
-    rp->ape2 |= gp_enable;
+void rcc_init(void){
+
+    struct rcc* c;
+    c = RCC_BASE;
 
 
-    shift = (bit - 8) * 4;
-    conf = gp->cr[1] & ~(0xf<<shift);
-    conf |= (MODE_OUT_2|CONF_GP_OD) << shift;
-    gp->cr[1] = conf;
 
-}
-
-
-// bssr <16 => BRy, resets to 0
-void led_off(struct gpio* gp, int bit) {
-    gp->bsrr = 1 << bit;
-}
-
-// bssr > 16 => BSy ports, sets to 1
-void led_on(struct gpio* gp, int bit) {
-    gp->bsrr = 1<<(bit+16);
 }
 
 void delay(int seconds) {
@@ -33,4 +16,19 @@ void delay(int seconds) {
     while(count>0){
         count--; 
     }
+}
+
+// outputs SWS[1:0]: System clock switch status
+int get_clock_src(void){
+
+    struct rcc* c;
+    c = RCC_BASE;
+
+    // we need 3 and 2th bits
+    // shift two times, then mask with 3
+    u32 reg = c->cfg;
+    u32 val = reg >> 2;
+    val = val & 3; 
+    
+    return (int) val;
 }
