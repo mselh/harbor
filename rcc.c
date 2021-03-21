@@ -3,10 +3,42 @@
 
 
 void rcc_init(void){
-
     struct rcc* c;
     c = RCC_BASE;
 
+    // turn on HSE
+    //c->rc = c->rc | HSE_ON;
+    // wait for  8 cycles, or, as done here, wait flag to raise
+    //while(((c->rc >> 17) & 1) == 0x0){
+    //}
+    //there is no bit level access only > bytes
+
+    // first configure pll, first one, unnumbered one
+    // 21-18 of c->cfg, pll multiplier 9x
+    c->cfg = PLL_HSE | PLLMUL9X | SYS_HSI | APB1_DIV2;;
+    // set pll clock source to external, cuz it is more accurate
+
+    int tmp1=60;
+    while(tmp1--){
+    }
+    
+    // enable pll, by turnin on 24th bit
+    c->rc = HSI_ON | HSE_ON | PLL_ENABLE | HSE_TRIM;
+
+    // wait for pll to be ready 
+    // bit 25 pll ready
+    while(!( c->rc & PLL_LOCK ) ) {
+    }
+    int tmp;
+    tmp=60;
+    while(tmp--){
+    }
+    * FLASH_ACR = FLASH_PREFETCH | FLASH_WAIT2;
+    
+    c->cfg = PLL_HSE | PLLMUL9X | SYS_PLL | APB1_DIV2;
+    tmp=60;
+    while(tmp--){
+    }
 
 
 }

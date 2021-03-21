@@ -29,7 +29,32 @@ struct rcc {
 
 // to get 72 MHz, we need PLL scaling as 9x
 #define PLLMUL9X (7 << 18) 
+// setter of pll input clock source to external crystall
+#define PLL_HSE		0x10000
+// enabler bits for pll as sysclock
+#define PLL_LOCK 0x02000000
 
+// hse on at init
+#define HSI_ON		1
+#define HSE_ON		0x10000
+#define PLL_ENABLE	0x01000000
+
+#define SYS_HSI 0x00
+#define SYS_PLL 0x02
+
+#define HSE_TRIM	0x80
+
+#define APB1_DIV2	(4<<8)
+
+
+#define FLASH_ACR	((volatile unsigned long *) 0x40022000)
+
+#define FLASH_PREFETCH	0x0010	/* enable prefetch buffer */
+#define FLASH_HCYCLE	0x0008	/* enable half cycle access */
+
+#define FLASH_WAIT0	0x0000	/* for sysclk <= 24 Mhz */
+#define FLASH_WAIT1	0x0001	/* for 24 < sysclk <= 48 Mhz */
+#define FLASH_WAIT2	0x0002	/* for 48 < sysclk <= 72 Mhz */
 void rcc_init(void);
 void delay(int);
 int get_clock_src(void);

@@ -9,6 +9,8 @@ void idle(void);
 
 void start(void) {
 
+    rcc_init();
+    // rcc
     // iniate led
     struct gpio *gp;
     gp = GPIOC_BASE;
@@ -42,9 +44,9 @@ void systick_handler(void){
     int src;
     src = get_clock_src();
     blink(1);
-    delay(2);
+    blink(2);
 
-    blink(src);
+    //blink(src);
     return;
 }
 
