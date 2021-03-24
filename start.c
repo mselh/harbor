@@ -1,6 +1,6 @@
 // already includes types.h
 #include "systick.c"
-#include "gpio.c"
+#include "serial.c"
 
 
 void start(void);
@@ -16,6 +16,8 @@ void start(void) {
     gp = GPIOC_BASE;
     led_init(gp, PC13, GPIOC_ENABLE);
     systick_init();
+    serial_init();
+
 
     // initate systick timer, to be used for context switching
     
@@ -23,9 +25,14 @@ void start(void) {
     // 3 led flash means  start has finished
     blink(3);
 
-    
-    //
-    idle();
+
+    int count = 0;
+	for ( ;; ) {
+	    if ( (++count % 16) == 0 )
+	    serial_putc ( 'a' );
+	    serial_putc ( 'A' );
+	    delay (35);
+	}    
 
 }
 
@@ -45,6 +52,8 @@ void systick_handler(void){
     src = get_clock_src();
     blink(1);
     blink(2);
+	serial_putc ( 'a' );
+	serial_putc ( 'A' );
 
     //blink(src);
     return;
